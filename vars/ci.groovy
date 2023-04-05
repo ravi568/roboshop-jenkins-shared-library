@@ -21,6 +21,14 @@ def call() {
                 }
             }
 
+            stage('code quality') {
+                steps {
+                    script{
+                        common.codequality()
+                    }
+                }
+            }
+
         }
 
     }
