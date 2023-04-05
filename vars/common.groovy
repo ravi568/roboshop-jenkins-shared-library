@@ -8,3 +8,14 @@ def compile() {
     }
 
 }
+
+def testcases() {
+    if(app_lang == "nodejs") {
+        sh 'echo test'
+    }
+
+    if(app_lang == "maven") {
+        sh 'echo test'
+    }
+
+}
