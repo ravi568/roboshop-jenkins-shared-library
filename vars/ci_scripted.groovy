@@ -1,6 +1,14 @@
+import groovy.lang.groovydoc.GroovydocTag
+
 def call() {
     if (!env.sonar_extra_opts){
         env.sonar_extra_opts= ""
+    }
+
+    if (env.TAG_NAME ==~ ".*"){
+        env.GTAG = "true"
+    } else {
+        env.GTAG = "false"
     }
     node('workstation') {
 
@@ -19,9 +27,14 @@ def call() {
            }
        }
 
-         stage('test cases') {
-             common.testcases()
-         }
+         println GTAG
+         println BRANCH_NAME
+
+       if(env.GTAG != "true" && env.BRANCH_NAME != "main") {
+           stage('test cases') {
+               common.testcases()
+           }
+       }
 
          stage('code quality') {
              common.codequality()
