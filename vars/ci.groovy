@@ -5,11 +5,11 @@ def call() {
         env.sonar_extra_opts= ""
     }
 
-    if (env.TAG_NAME ==~ ".*"){
-        env.GTAG = "true"
-    } else {
-        env.GTAG = "false"
-    }
+//    if (env.TAG_NAME ==~ ".*"){
+//        env.GTAG = "true"
+//    } else {
+//        env.GTAG = "false"
+//    }
 
     node('workstation') {
 
