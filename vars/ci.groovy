@@ -1,22 +1,12 @@
-
-
 def call() {
-    if (!env.sonar_extra_opts){
-        env.sonar_extra_opts= ""
+    if (!env.sonar_extra_opts) {
+        env.sonar_extra_opts=""
     }
-
-//    if (env.TAG_NAME ==~ ".*"){
-//        env.GTAG = "true"
-//    } else {
-//        env.GTAG = "false"
-//    }
-
     node('workstation') {
-
 
         try {
 
-            stage('check out code ') {
+            stage('Check Out Code') {
                 cleanWs()
                 git branch: 'main', url: 'https://github.com/ravi568/cart'
             }
@@ -24,36 +14,18 @@ def call() {
             sh 'env'
 
             if (env.BRANCH_NAME != "main") {
-                stage('compile/build') {
+                stage('Compile/Build') {
                     common.compile()
                 }
             }
 
-//            println GTAG
-//            println BRANCH_NAME
-//
-//            if (env.GTAG != "true" && env.BRANCH_NAME != "main") {
-//                stage('test cases') {
-//                    common.testcases()
-//                }
-//            }
-//
-//            if (BRANCH_NAME ==~ "PR-.*") {
-//                stage('code quality') {
-//                    common.codequality()
-//                }
-//            }
+            stage('Test Cases') {
+                common.testcases()
+            }
 
-
-//            if (env.GTAG == "true") {
-//                stage('package') {
-//                    common.testcases()
-//                }
-//
-//                stage('Artifact Upload') {
-//                    common.testcases()
-//                }
-//            }
+            stage('Code Quality') {
+                common.codequality()
+            }
 
         }  catch (e) {
             mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com', subject: "${component} - pipeline failed", to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
