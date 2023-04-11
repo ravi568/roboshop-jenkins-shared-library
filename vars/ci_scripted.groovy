@@ -12,6 +12,7 @@ def call() {
     }
     node('workstation') {
 
+
      try {
 
          stage('check out code ') {
