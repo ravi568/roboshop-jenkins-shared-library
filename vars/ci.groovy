@@ -43,6 +43,7 @@ def call() {
            }
        }
 
+
          if (env.GTAG == "true") {
              stage('package') {
                  common.testcases()
