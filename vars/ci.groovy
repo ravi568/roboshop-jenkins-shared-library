@@ -1,44 +1,64 @@
+import groovy.lang.groovydoc.GroovydocTag
+
 def call() {
     if (!env.sonar_extra_opts){
         env.sonar_extra_opts= ""
     }
-    pipeline {
-        agent any
 
-        stages {
+    if (env.TAG_NAME ==~ ".*"){
+        env.GTAG = "true"
+    } else {
+        env.GTAG = "false"
+    }
+    node('workstation') {
 
-            stage('compile/build') {
-                steps {
-                    script{
-                          common.compile()
-                    }
 
-                }
-            }
+     try {
 
-            stage('test cases') {
-                steps {
-                    script{
-                        common.testcases()
-                    }
-                }
-            }
+         stage('check out code ') {
+             cleanWs()
+             git branch: 'main', url: 'https://github.com/ravi568/cart'
+         }
 
-            stage('code quality') {
-                steps {
-                    script{
-                        common.codequality()
-                    }
-                }
-            }
+         sh 'env'
 
-        }
+       if (env.BRANCH_NAME != "main" ) {
+           stage('compile/build') {
+               common.compile()
+           }
+       }
 
-        post{
-            failure{
-                mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com',subject: "${component} - pipeline failed" , to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
-            }
-        }
+         println GTAG
+         println BRANCH_NAME
+
+       if (env.GTAG != "true" && env.BRANCH_NAME != "main") {
+           stage('test cases') {
+               common.testcases()
+           }
+       }
+
+       if (BRANCH_NAME ==~ "PR-.*") {
+           stage('code quality') {
+               common.codequality()
+           }
+       }
+
+         if (env.GTAG == "true") {
+             stage('package') {
+                 common.testcases()
+             }
+
+             stage('Artifact Upload') {
+                 common.testcases()
+             }
+         }
+
+
+     } catch (e) {
+         mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com',subject: "${component} - pipeline failed" , to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
+
+     }
 
     }
+
 }
