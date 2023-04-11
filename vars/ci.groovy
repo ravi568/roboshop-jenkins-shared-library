@@ -13,20 +13,20 @@ def call() {
     node('workstation') {
 
 
-     try {
+        try {
 
-         stage('check out code ') {
-             cleanWs()
-             git branch: 'main', url: 'https://github.com/ravi568/cart'
-         }
+            stage('check out code ') {
+                cleanWs()
+                git branch: 'main', url: 'https://github.com/ravi568/cart'
+            }
 
-         sh 'env'
+            sh 'env'
 
-       if (env.BRANCH_NAME != "main" ) {
-           stage('compile/build') {
-               common.compile()
-           }
-       }
+            if (env.BRANCH_NAME != "main") {
+                stage('compile/build') {
+                    common.compile()
+                }
+            }
 
 //         println GTAG
 //         println BRANCH_NAME
@@ -52,14 +52,12 @@ def call() {
 //             stage('Artifact Upload') {
 //                 common.testcases()
 //             }
-//         }
+        } catch (e) {
+            mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com', subject: "${component} - pipeline failed", to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
 
-
-     } catch (e) {
-         mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com',subject: "${component} - pipeline failed" , to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
-
-     }
+        }
+    }
 
     }
 
-}
+
