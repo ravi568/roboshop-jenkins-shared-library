@@ -1,33 +1,33 @@
-//
-//
-//def call() {
-//    if (!env.sonar_extra_opts){
-//        env.sonar_extra_opts= ""
-//    }
-//
+
+
+def call() {
+    if (!env.sonar_extra_opts){
+        env.sonar_extra_opts= ""
+    }
+
 //    if (env.TAG_NAME ==~ ".*"){
 //        env.GTAG = "true"
 //    } else {
 //        env.GTAG = "false"
 //    }
-//    node('workstation') {
-//
-//
-//     try {
-//
-//         stage('check out code ') {
-//             cleanWs()
-//             git branch: 'main', url: 'https://github.com/ravi568/cart'
-//         }
-//
-//         sh 'env'
-//
-//       if (env.BRANCH_NAME != "main" ) {
-//           stage('compile/build') {
-//               common.compile()
-//           }
-//       }
-//
+    node('workstation') {
+
+
+     try {
+
+         stage('check out code ') {
+             cleanWs()
+             git branch: 'main', url: 'https://github.com/ravi568/cart'
+         }
+
+         sh 'env'
+
+       if (env.BRANCH_NAME != "main" ) {
+           stage('compile/build') {
+               common.compile()
+           }
+       }
+
 //         println GTAG
 //         println BRANCH_NAME
 //
@@ -36,30 +36,30 @@
 //               common.testcases()
 //           }
 //       }
-//
-////       if (BRANCH_NAME ==~ "PR-.*") {
-////           stage('code quality') {
-////               common.codequality()
-////           }
-////       }
-////
-////
-////         if (env.GTAG == "true") {
-////             stage('package') {
-////                 common.testcases()
-////             }
-////
-////             stage('Artifact Upload') {
-////                 common.testcases()
-////             }
-////         }
+
+//       if (BRANCH_NAME ==~ "PR-.*") {
+//           stage('code quality') {
+//               common.codequality()
+//           }
+//       }
 //
 //
-//     } catch (e) {
-//         mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com',subject: "${component} - pipeline failed" , to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
+//         if (env.GTAG == "true") {
+//             stage('package') {
+//                 common.testcases()
+//             }
 //
-//     }
-//
-//    }
-//
-//}
+//             stage('Artifact Upload') {
+//                 common.testcases()
+//             }
+//         }
+
+
+     } catch (e) {
+         mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com',subject: "${component} - pipeline failed" , to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
+
+     }
+
+    }
+
+}
