@@ -1,15 +1,18 @@
 
 
-def call() {
-    if (!env.sonar_extra_opts){
-        env.sonar_extra_opts= ""
-    }
+
 
 //    if (env.TAG_NAME ==~ ".*"){
 //        env.GTAG = "true"
 //    } else {
 //        env.GTAG = "false"
 //    }
+
+def call() {
+    if (!env.sonar_extra_opts){
+        env.sonar_extra_opts= ""
+    }
+
     node('workstation') {
 
 
@@ -27,6 +30,14 @@ def call() {
                         common.compile()
                     }
                 }
+
+        } catch (e) {
+            mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com', subject: "${component} - pipeline failed", to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
+
+        }
+    }
+
+}
 
     //         println GTAG
     //         println BRANCH_NAME
@@ -52,12 +63,6 @@ def call() {
     //             stage('Artifact Upload') {
     //                 common.testcases()
     //             }
-          } catch (e) {
-            mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com', subject: "${component} - pipeline failed", to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
 
-        }
-    }
-
-    }
 
 
