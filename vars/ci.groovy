@@ -35,9 +35,10 @@ def call() {
                 }
             }
 
-
-            stage('Code Quality') {
-                common.codequality()
+            if (BRANCH_NAME ==~ "PR.*"){
+                stage('Code Quality') {
+                    common.codequality()
+                }
             }
         }  catch (e) {
             mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com', subject: "${component} - pipeline failed", to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
