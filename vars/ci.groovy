@@ -40,6 +40,19 @@ def call() {
                     common.codequality()
                 }
             }
+
+            if(env.GTAG == "true") {
+                stage('package') {
+                    common.testcases()
+                }
+
+                stage('Artifact upload') {
+                    common.testcases()
+                }
+            }
+
+
+
         }  catch (e) {
             mail body: "<h1>${component} - pipeline failed \n ${BUILD_URL}</h1>", from: 'ravidevopsprasad@gmail.com', subject: "${component} - pipeline failed", to: ' ravidevopsprasad@gmail.com', mimeType: 'text/html'
 
