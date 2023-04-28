@@ -47,7 +47,7 @@ def Artifactupload(){
 //        sh 'echo ${TAG_NAME} >VERSION'
 //        sh 'curl -v -u ${NEXUS_USER}:${NEXUS_PASS} --upload-file ${component}-${TAG_NAME}.zip http://172.31.13.128:8081/repository/${component}/${component}-${TAG_NAME}.zip'
 //    }
-    // sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 271551280472.dkr.ecr.us-east-1.amazonaws.com'
-   // sh 'docker push 271551280472.dkr.ecr.us-east-1.amazonaws.com/${component}:${TAG_NAME}'
+    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 271551280472.dkr.ecr.us-east-1.amazonaws.com'
+    sh 'docker push 271551280472.dkr.ecr.us-east-1.amazonaws.com/${component}:${TAG_NAME}'
 
 }
