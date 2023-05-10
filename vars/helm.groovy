@@ -15,7 +15,7 @@ def call() {
         stages {
             stage('Clone Application') {
                 steps {
-                    dir('APP'){
+                    dir('APP') {
                         git branch: 'main', url: "https://github.com/ravi568/${component}"
                     }
 
